@@ -17,6 +17,10 @@ if (fs.existsSync(configPath)) {
     config = { users: {} };
 }
 
+for (const cfg of Object.values(config.users || {})) {
+    cfg.sudoList ||= []; cfg.prefix ||= '.'; cfg.welcome ??= false; cfg.goodbye ??= false; cfg.antilink ??= false; cfg.online ??= false; cfg.type ??= false; cfg.record ??= false; cfg.autoreact ??= false; cfg.like ??= false;
+}
+
 // Auto-save config when modified
 const saveConfig = () => {
 

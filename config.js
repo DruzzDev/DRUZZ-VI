@@ -11,7 +11,7 @@ export const MODE = "Default"; // Your access key to run this bot
 
 export const PUB = true; // Is it a private or public bot 
 
-export const OWNER_NAME = "𝗗𝗥𝗨𝗭𝗭" // Your Dev username
+export const OWNER_NAME = "𝙳𝚁𝚄𝚉𝚉" // Your Dev username
 
 export const OWNER_NUM = process.env.OWNER_NUM || "50937107029"; // Your number
 

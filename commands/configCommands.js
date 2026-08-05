@@ -3,9 +3,9 @@ import configManager from '../utils/manageConfigs.js';
 function ensure(number) {
     configManager.config.users ||= {};
     configManager.config.users[number] ||= {
-        sudoList: [], prefix: '.', welcome: false, online: false,
+        sudoList: [], prefix: '.', welcome: false, goodbye: false, antilink: false, online: false,
         type: false, record: false, autoreact: false, like: false,
-        response: true, emoji: '🥷'
+        response: true, emoji: '🇭🇹'
     };
     return configManager.config.users[number];
 }
@@ -15,6 +15,7 @@ export async function toggle(message, client, number, command, value = '') {
     const key = {
         online: 'online',
         welcome: 'welcome',
+        goodbye: 'goodbye',
         autotype: 'type',
         autorecord: 'record',
         autoreact: 'autoreact',
@@ -23,23 +24,23 @@ export async function toggle(message, client, number, command, value = '') {
 
     if (!key) return;
     if (!['on', 'off'].includes(String(value).toLowerCase())) {
-        return client.sendMessage(message.key.remoteJid, { text: `Usage: .${command} on|off` }, { quoted: message });
+        return client.sendMessage(message.key.remoteJid, { text: `*𝚄𝚂𝙰𝙶𝙴: .${command} on|off*` }, { quoted: message });
     }
 
     cfg[key] = String(value).toLowerCase() === 'on';
     configManager.save();
-    await client.sendMessage(message.key.remoteJid, { text: `✅ ${command}: ${cfg[key] ? 'ON' : 'OFF'}` }, { quoted: message });
+    await client.sendMessage(message.key.remoteJid, { text: `*✅ ${command}: ${cfg[key] ? 'ON' : 'OFF'}*` }, { quoted: message });
 }
 
 export async function setPrefix(message, client, number, value) {
     const cfg = ensure(number);
     const prefix = String(value || '').trim();
     if (!prefix || prefix.length > 3 || /\s/.test(prefix)) {
-        return client.sendMessage(message.key.remoteJid, { text: 'Usage: .setprefix <prefix> (1-3 chars)' }, { quoted: message });
+        return client.sendMessage(message.key.remoteJid, { text: '*𝚄𝚂𝙰𝙶𝙴: .setprefix <prefix> (1-3 chars)*' }, { quoted: message });
     }
     cfg.prefix = prefix;
     configManager.save();
-    await client.sendMessage(message.key.remoteJid, { text: `✅ Prefix set to: ${prefix}` }, { quoted: message });
+    await client.sendMessage(message.key.remoteJid, { text: `*✅ 𝙿𝚁𝙴𝙵𝙸𝚇 𝚂𝙴𝚃 𝚃𝙾: ${prefix}*` }, { quoted: message });
 }
 
 export async function getConfig(message, client, number) {

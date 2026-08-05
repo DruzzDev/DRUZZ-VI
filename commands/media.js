@@ -62,7 +62,7 @@ export async function tomp3(message, client) {
             })
         })
 
-        await client.sendMessage(message.key.remoteJid, { audio: fs.readFileSync(outputPath), mimetype: 'audio/mp4', ptt: false })
+        await client.sendMessage(message.key.remoteJid, { audio: fs.readFileSync(outputPath), mimetype: 'audio/mpeg', ptt: false })
 
         fs.unlinkSync(inputPath)
         fs.unlinkSync(outputPath)
@@ -83,8 +83,8 @@ export async function sticker(message, client) {
     try {
         const buffer = await downloadMediaMessage(wrapped, 'buffer', {}, { reuploadRequest: client.reuploadRequest });
         const sticker = new Sticker(buffer, {
-            pack: 'DRUZZ',
-            author: 'WhatsApp Bot',
+            pack: '𝙳𝚁𝚄𝚉𝚉',
+            author: '𝙿𝙾𝚆𝙴𝚁𝙴𝙳 𝙱𝚈 𝙳𝚁𝚄𝚉𝚉 𝚇-𝙼𝙳',
             type: source.mimetype?.includes('video') ? 'full' : 'default'
         });
         await client.sendMessage(message.key.remoteJid, { sticker: await sticker.toBuffer() }, { quoted: message });
@@ -98,7 +98,7 @@ export async function getProfilePicture(message, client) {
     const jid = message.message?.extendedTextMessage?.contextInfo?.participant || message.key.remoteJid;
     try {
         const url = await client.profilePictureUrl(jid, 'image');
-        await client.sendMessage(message.key.remoteJid, { image: { url }, caption: '🖼️ Profile picture' }, { quoted: message });
+        await client.sendMessage(message.key.remoteJid, { image: { url }, caption: '*🖼️ 𝙿𝚁𝙾𝙵𝙸𝙻𝙴 𝙿𝙸𝙲𝚃𝚄𝚁𝙴*' }, { quoted: message });
     } catch {
         await client.sendMessage(message.key.remoteJid, { text: '*❌ 𝙿𝚁𝙾𝙵𝙸𝙻𝙴 𝙿𝙸𝙲𝚃𝚄𝚁𝙴 𝙽𝙾𝚃 𝙰𝚅𝙰𝙸𝙻𝙰𝙱𝙻𝙴.*' }, { quoted: message });
     }
