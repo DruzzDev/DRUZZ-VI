@@ -31,3 +31,9 @@ PAIRING_SECRET=your_private_secret
 ```
 
 Open the service URL and enter the WhatsApp number with country code.
+
+## Stability changes
+- The website no longer asks visitors for `PAIRING_SECRET`.
+- Pairing API no longer blocks code generation on that variable.
+- Repeated requests for the same number do not start competing pairing sessions.
+- Keep `PAIRING_SECRET` unset for this public pairing flow.

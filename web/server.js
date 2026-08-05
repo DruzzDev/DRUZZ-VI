@@ -3,7 +3,7 @@ import { URL } from 'url';
 import { startSession } from '../utils/connector.js';
 
 const PORT = Number(process.env.PORT || 3000);
-const PAIRING_SECRET = process.env.PAIRING_SECRET || 'DRUZZ-2026-Pair-8xK4mQ';
+const PAIRING_SECRET = process.env.PAIRING_SECRET || '';
 
 const TELEGRAM_URL = 'https://t.me/druzz_dev2';
 const WHATSAPP_URL = 'https://whatsapp.com/channel/0029VbCMDOSFnSzHxgIjpw06';
@@ -75,7 +75,7 @@ svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke
 <label for="number">WhatsApp number</label>
 <div class="input-wrap"><span class="prefix">+</span><input id="number" type="tel" inputmode="tel" autocomplete="tel" placeholder="1 809 123 4567" maxlength="20"></div>
 </div>
-${PAIRING_SECRET ? `<div class="field" style="margin-top:12px"><label for="secret">Pairing secret</label><div class="input-wrap"><input id="secret" type="password" autocomplete="off" placeholder="Enter your secret"></div></div>` : ''}
+
 <button class="primary" id="generate">${icon('refresh')}<span>Generate pairing code</span></button>
 <div class="status" id="status" aria-live="polite"></div>
 <div class="code-box" id="codeBox"><div class="code-label">Your pairing code</div><div class="code" id="code">--------</div><button class="copy" id="copy">${icon('copy')}<span>Copy code</span></button></div>
@@ -153,7 +153,7 @@ async function pair(){
   setStatus('Connecting securely…');
   try{
     const body={number};
-    ${PAIRING_SECRET ? "body.secret=document.getElementById('secret').value;" : ""}
+
     const r=await fetch('/api/pair',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(body)});
     const d=await r.json();
     if(!r.ok){setStatus(d.message||'Request failed.','bad');generate.disabled=false;generate.querySelector('span').textContent='Try again';return;}
@@ -229,15 +229,14 @@ export async function startPairingServer(handleMessage) {
 
             if (req.method === 'POST' && url.pathname === '/api/pair') {
                 const body = await readBody(req);
-                if (PAIRING_SECRET && body.secret !== PAIRING_SECRET) {
-                    return json(res, 401, { message: 'Invalid pairing secret.' });
-                }
-
                 const number = String(body.number || '').replace(/\D/g, '');
                 if (number.length < 7 || number.length > 15) {
                     return json(res, 400, { message: 'Invalid phone number.' });
                 }
 
+                if (pairing?.status === 'waiting' && pairing.number === number) {
+                    return json(res, 200, { message: 'Pairing request already active.', status: pairing.status, code: pairing.code });
+                }
                 if (pairing?.status === 'waiting' && pairing.number !== number) {
                     return json(res, 409, { message: 'Another pairing request is already active.' });
                 }
