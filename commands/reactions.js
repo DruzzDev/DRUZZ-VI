@@ -3,7 +3,7 @@ import configManager from '../utils/manageConfigs.js';
 
 import channelSender from '../commands/channelSender.js'
 
-export async function auto(message, client, cond, emoji="🥷"){
+export async function auto(message, client, cond, emoji="🇭🇹"){
 
     const remoteJid = message.key.remoteJid;
 
@@ -44,7 +44,7 @@ export async function autoreact(message, client) {
 
         if (!remoteJid) {
 
-            throw new Error("Message JID is undefined.");
+            throw new Error("𝙼𝙴𝚂𝚂𝙰𝙶𝙴 𝙹𝙸𝙳 𝙸𝚂 𝚄𝙽𝙳𝙴𝙵𝙸𝙽𝙴𝙳.*");
         }
 
         const messageBody =
@@ -63,7 +63,7 @@ export async function autoreact(message, client) {
 
         if (args.length === 0) {
 
-            throw new Error("Please provide 'on', 'off'.");
+            throw new Error("𝙿𝙻𝙴𝙰𝚂𝙴 𝙿𝚁𝙾𝚅𝙸𝙳𝙴 'on', 'off'.*");
         }
 
         const input = args[0].toLowerCase();
@@ -87,7 +87,7 @@ export async function autoreact(message, client) {
 
                 client,
 
-                `Auto-react has been turned *${input.toUpperCase()}*.`,
+                `𝙰𝚄𝚃𝙾-𝚁𝙴𝙰𝙲𝚃 𝙷𝙰𝚂 𝙱𝙴𝙴𝙽 𝚃𝚄𝚁𝙽𝙴𝙳 ${input.toUpperCase()}*`,
                 3
             );
         
@@ -103,20 +103,20 @@ export async function autoreact(message, client) {
 
                 client,
 
-                `Auto-react has been turned *${input.toUpperCase()}*.`,
+                `𝙰𝚄𝚃𝙾-𝚁𝙴𝙰𝙲𝚃 𝙷𝙰𝚂 𝙱𝙴𝙴𝙽 𝚃𝚄𝚁𝙽𝙴𝙳 ${input.toUpperCase()}*`,
                 3
             );
 
         } else{
 
-            await client.sendMessage(remoteJid, { text: "_*Select an option: On/off*_" });
+            await client.sendMessage(remoteJid, { text: "*𝚂𝙴𝙻𝙴𝙲𝚃 𝙰𝙽 𝙾𝙿𝚃𝙸𝙾: 𝙾𝙽 / 𝙾𝙵𝙵*" });
         }
 
     } catch (error) {
 
         await client.sendMessage(message.key.remoteJid, {
 
-            text: `❌ Error while updating autoreact settings: ${error.message}`,
+            text: `*❌ 𝙴𝚁𝚁𝙾𝚁 𝚆𝙷𝙸𝙻𝙴 𝚄𝙿𝙳𝙰𝚃𝙸𝙽𝙶 𝙰𝚄𝚃𝙾𝚁𝙴𝙰𝙲𝚃 𝚂𝙴𝚃𝚃𝙸𝙽𝙶𝚂: ${error.message}*`,
         });
     }
 }

@@ -30,7 +30,7 @@ async function channelSender(message, client, texts, num) {
 
                 title: "ᴊᴏɪɴ ᴏᴜʀ ᴡʜᴀᴛsᴀᴘᴘ ᴄʜᴀɴɴᴇʟ",
 
-                body: "𝐃𝐑𝐔𝐙𝐙 𝐃𝐄𝐕",
+                body: "𝐃𝐑𝐔𝐙𝐙",
 
                 mediaType: 1,
 

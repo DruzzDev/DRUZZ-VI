@@ -31,15 +31,15 @@ const page = `<!doctype html>
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="theme-color" content="#070a0f">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<title>DRUZZ VI — Pairing</title>
+<title>DRUZZ X-MD— Whatsapp Pairing</title>
 <style>
-:root{--bg:#070a0f;--panel:rgba(15,20,29,.78);--line:rgba(255,255,255,.1);--text:#f4f7fb;--muted:#929baa;--accent:#7c5cff;--accent2:#00d4ff;--good:#35d07f;--danger:#ff5573}
+:root{--bg:#090305;--panel:rgba(35,7,10,.64);--line:rgba(255,95,95,.18);--text:#fff6f6;--muted:#c39a9f;--accent:#ff1744;--accent2:#ff6a00;--good:#55e89a;--danger:#ff3d67}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;min-height:100%;background:var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;overflow-x:hidden}
 body{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:28px 16px;overscroll-behavior:none}
 body:before,body:after{content:"";position:fixed;z-index:-2;border-radius:50%;filter:blur(70px);opacity:.25;animation:float 10s ease-in-out infinite}
-body:before{width:260px;height:260px;background:#6b4cff;top:-70px;left:-80px}
-body:after{width:280px;height:280px;background:#00b7ff;right:-110px;bottom:-100px;animation-delay:-4s}
+body:before{width:260px;height:260px;background:#ff1744;top:-70px;left:-80px}
+body:after{width:280px;height:280px;background:#ff6a00;right:-110px;bottom:-100px;animation-delay:-4s}
 @keyframes float{50%{transform:translate3d(20px,30px,0) scale(1.08)}}
 .shell{width:min(100%,520px);position:relative}
 .topbar{display:flex;justify-content:flex-end;margin-bottom:12px}
@@ -48,13 +48,13 @@ body:after{width:280px;height:280px;background:#00b7ff;right:-110px;bottom:-100p
 svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .card{position:relative;overflow:hidden;background:var(--panel);border:1px solid var(--line);border-radius:30px;padding:30px;box-shadow:0 30px 90px rgba(0,0,0,.45);backdrop-filter:blur(22px);animation:rise .55s ease both}
 @keyframes rise{from{opacity:0;transform:translateY(18px) scale(.985)}to{opacity:1;transform:none}}
-.card:before{content:"";position:absolute;inset:0;background:linear-gradient(135deg,rgba(124,92,255,.12),transparent 42%,rgba(0,212,255,.08));pointer-events:none}
+.card:before{content:"";position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,23,68,.14),transparent 42%,rgba(255,106,0,.10));pointer-events:none}
 .brand{position:relative;display:flex;align-items:center;gap:14px;margin-bottom:24px}
-.logo{width:52px;height:52px;border-radius:17px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:grid;place-items:center;box-shadow:0 10px 35px rgba(99,82,255,.3);font-weight:900;font-size:20px;letter-spacing:-1px}
+.logo{width:52px;height:52px;border-radius:17px;background:linear-gradient(135deg,#ff1744,#ff6a00);display:grid;place-items:center;box-shadow:0 10px 35px rgba(99,82,255,.3);font-weight:900;font-size:20px;letter-spacing:-1px}
 .brand h1{font-size:21px;margin:0;font-weight:800;letter-spacing:-.4px}.brand p{margin:4px 0 0;color:var(--muted);font-size:12px}
 .hero{position:relative;margin-bottom:22px}.eyebrow{font-size:11px;letter-spacing:1.7px;text-transform:uppercase;color:#aeb8c8;font-weight:800}.hero h2{font-size:34px;line-height:1.05;letter-spacing:-1.4px;margin:7px 0 10px}.hero p{color:var(--muted);font-size:14px;line-height:1.6;margin:0}
-.field{position:relative;margin-top:22px}.field label{display:block;color:#cbd2dc;font-size:12px;font-weight:700;margin-bottom:8px}.input-wrap{display:flex;align-items:center;background:rgba(0,0,0,.25);border:1px solid var(--line);border-radius:16px;padding:0 14px;transition:.2s}.input-wrap:focus-within{border-color:rgba(124,92,255,.8);box-shadow:0 0 0 4px rgba(124,92,255,.1)}.prefix{color:#7f8a9b;font-size:14px;margin-right:4px}input{width:100%;height:54px;border:0;outline:0;background:transparent;color:#fff;font-size:16px;letter-spacing:.3px}input::placeholder{color:#657081}
-.primary{width:100%;height:54px;margin-top:13px;border:0;border-radius:16px;background:linear-gradient(100deg,var(--accent),#5d7cff 55%,var(--accent2));color:#fff;font-weight:800;font-size:14px;letter-spacing:.1px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:9px;box-shadow:0 12px 30px rgba(94,89,255,.25);transition:.2s}.primary:hover{transform:translateY(-1px);filter:brightness(1.06)}.primary:active{transform:translateY(1px)}.primary:disabled{opacity:.55;cursor:wait;transform:none}
+.field{position:relative;margin-top:22px}.field label{display:block;color:#cbd2dc;font-size:12px;font-weight:700;margin-bottom:8px}.input-wrap{display:flex;align-items:center;background:rgba(0,0,0,.25);border:1px solid var(--line);border-radius:16px;padding:0 14px;transition:.2s}.input-wrap:focus-within{border-color:rgba(255,23,68,.85);box-shadow:0 0 0 4px rgba(255,23,68,.12)}.prefix{color:#7f8a9b;font-size:14px;margin-right:4px}input{width:100%;height:54px;border:0;outline:0;background:transparent;color:#fff;font-size:16px;letter-spacing:.3px}input::placeholder{color:#657081}
+.primary{width:100%;height:54px;margin-top:13px;border:0;border-radius:16px;background:linear-gradient(100deg,#b80024,#ff1744 48%,#ff6a00);color:#fff;font-weight:800;font-size:14px;letter-spacing:.1px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:9px;box-shadow:0 12px 30px rgba(255,23,68,.28);transition:.2s}.primary:hover{transform:translateY(-1px);filter:brightness(1.06)}.primary:active{transform:translateY(1px)}.primary:disabled{opacity:.55;cursor:wait;transform:none}
 .status{min-height:21px;text-align:center;color:var(--muted);font-size:12px;margin:14px 0 0}.status.good{color:var(--good)}.status.bad{color:var(--danger)}
 .code-box{display:none;margin-top:16px;border:1px solid rgba(53,208,127,.22);background:rgba(53,208,127,.055);border-radius:18px;padding:15px}.code-box.show{display:block;animation:pop .3s ease}.code-label{font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:#8f9aaa;font-weight:800;text-align:center}.code{font-size:31px;letter-spacing:7px;text-align:center;font-weight:900;margin:8px 0 12px;font-variant-numeric:tabular-nums}.copy{width:100%;height:44px;border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.06);color:#fff;display:flex;align-items:center;justify-content:center;gap:8px;font-weight:700;cursor:pointer}.copy:hover{background:rgba(255,255,255,.1)}
 @keyframes pop{from{opacity:0;transform:scale(.97)}to{opacity:1;transform:none}}
@@ -68,26 +68,26 @@ svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke
 <main class="shell">
 <div class="topbar"><button class="icon-btn" id="menuBtn" aria-label="Open menu">${icon('menu')}</button></div>
 <section class="card">
-<div class="brand"><div class="logo">D</div><div><h1>DRUZZ VI</h1><p>Secure WhatsApp pairing</p></div></div>
+<div class="brand"><div class="logo">D</div><div><h1>DRUZZ X-MD</h1><p>Secure WhatsApp pairing</p></div></div>
 <div class="hero"><div class="eyebrow">Multi-device connection</div><h2>Connect your WhatsApp.</h2><p>Enter your number with or without the <strong>+</strong> sign. Generate a pairing code and link this device from WhatsApp.</p></div>
 
 <div class="field">
 <label for="number">WhatsApp number</label>
-<div class="input-wrap"><span class="prefix">+</span><input id="number" type="tel" inputmode="tel" autocomplete="tel" placeholder="1 809 123 4567" maxlength="20"></div>
+<div class="input-wrap"><span class="prefix">+</span><input id="number" type="tel" inputmode="tel" autocomplete="tel" placeholder="509 xxx xxx" maxlength="20"></div>
 </div>
 
-<button class="primary" id="generate">${icon('refresh')}<span>Generate pairing code</span></button>
+<button class="primary" id="generate">${icon('refresh')}<span>Generate your code</span></button>
 <div class="status" id="status" aria-live="polite"></div>
 <div class="code-box" id="codeBox"><div class="code-label">Your pairing code</div><div class="code" id="code">--------</div><button class="copy" id="copy">${icon('copy')}<span>Copy code</span></button></div>
 
 <div class="steps"><div class="step"><b>01</b><span>Generate code</span></div><div class="step"><b>02</b><span>Open Linked devices</span></div><div class="step"><b>03</b><span>Link by phone</span></div></div>
-<div class="footer">Powered by <strong>DRUZZ VI</strong> · Keep your pairing code private.</div>
+<div class="footer">Powered by <strong>DRUZZ DEV</strong> · Keep your pairing code private.</div>
 </section>
 </main>
 
 <div class="drawer" id="drawer">
 <aside class="panel">
-<div class="panel-head"><h3>DRUZZ VI Menu</h3><button class="icon-btn" id="closeMenu" aria-label="Close menu">${icon('x')}</button></div>
+<div class="panel-head"><h3>DRUZZ X-MD Menu</h3><button class="icon-btn" id="closeMenu" aria-label="Close menu">${icon('x')}</button></div>
 <p>Official channels and quick instructions.</p>
 <a class="nav-link" href="${TELEGRAM_URL}" target="_blank" rel="noopener noreferrer">${icon('telegram')}<div><span>Telegram</span><small>Join the developer channel</small></div></a>
 <a class="nav-link" href="${WHATSAPP_URL}" target="_blank" rel="noopener noreferrer">${icon('whatsapp')}<div><span>WhatsApp Channel</span><small>Follow official updates</small></div></a>
@@ -111,6 +111,13 @@ function cleanNumber(v){return String(v||'').replace(/[^0-9]/g,'');}
 function setStatus(text,type=''){statusEl.textContent=text;statusEl.className='status '+type}
 function unlockSound(){audio.play().then(()=>{audio.pause();audio.currentTime=0}).catch(()=>{});}
 function playSound(){audio.currentTime=0;audio.play().catch(()=>{});}
+let firstInteractionSoundPlayed=false;
+function playSoundOnFirstInteraction(){
+  if(firstInteractionSoundPlayed) return;
+  firstInteractionSoundPlayed=true;
+  playSound();
+}
+['pointerdown','touchstart','click','keydown'].forEach(evt=>document.addEventListener(evt,playSoundOnFirstInteraction,{once:true,passive:true}));
 async function getStatus(){
   const r=await fetch('/api/status',{cache:'no-store'});
   return await r.json();

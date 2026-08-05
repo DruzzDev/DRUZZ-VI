@@ -7,7 +7,7 @@ export async function pingCommand(message, client) {
     const startTime = Date.now();
 
     // Send a ping message
-    const sentMessage = await client.sendMessage(remoteJid, { text: '_Pong!_' });
+    const sentMessage = await client.sendMessage(remoteJid, { text: '_𝙿𝙾𝙽𝙶!_' });
 
     // Calculate the latency
     const endTime = Date.now();
@@ -17,7 +17,7 @@ export async function pingCommand(message, client) {
     // Send the latency result back to the user
     await client.sendMessage(remoteJid, {
 
-        text: `_speed: ${latency} ms_\n`,
+        text: `*𝚂𝙿𝙴𝙴𝙳: ${latency} 𝙼𝚂*\n`,
 
     });
 }

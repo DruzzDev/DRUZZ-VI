@@ -44,7 +44,7 @@ export async function handleGroupAction(message, client, action) {
 
         } else {
 
-            throw new Error('No participant specified.');
+            throw new Error('𝙽𝙾 𝙿𝙰𝚁𝚃𝙸𝙲𝙸𝙿𝙰𝙽𝚃 𝚂𝙿𝙴𝙲𝙸𝙵𝙸𝙴𝙳.*');
         }
         
         const num = `@${participant.replace('@s.whatsapp.net', '')}`;
@@ -53,18 +53,18 @@ export async function handleGroupAction(message, client, action) {
         
         const actionMessages = {
 
-            remove: `${num} has been removed.`,
+            remove: `*${num} 𝙷𝙰𝚂 𝙱𝙴𝙴𝙽 𝚁𝙴𝙼𝙾𝚅𝙴𝙳.*`,
 
-            promote: `_${num} has been promoted to admin._`,
+            promote: `*${num} 𝙷𝙰𝚂 𝙱𝙴𝙴𝙽 𝙿𝚁𝙾𝙼𝙾𝚃𝙴𝙳 𝚃𝙾 𝙰𝙳𝙼𝙸𝙽.*`,
 
-            demote: `_${num} has been removed as an admin._`
+            demote: `*${num} 𝙷𝙰𝚂 𝙱𝙴𝙴𝙽 𝚁𝙴𝙼𝙾𝚅𝙴𝙳 𝙰𝚂 𝙰𝙽 𝙰𝙳𝙼𝙸𝙽.*`
         };
 
         await client.sendMessage(remoteJid, { text: actionMessages[action] });
 
     } catch (error) {
 
-        await client.sendMessage(remoteJid, { text: `_Error: Unable to perform action. ${error.message}_` });
+        await client.sendMessage(remoteJid, { text: `*𝙴𝚁𝚁𝙾𝚁: 𝚄𝙽𝙰𝙱𝙻𝙴 𝚃𝙾 𝙿𝙴𝚁𝙵𝙾𝚁𝙼 𝙰𝙲𝚃𝙸𝙾𝙽. ${error.message}*` });
     }
 }
 
@@ -110,11 +110,11 @@ export async function kickall(message, client) {
             }
         }
         
-        await client.sendMessage(remoteJid, { text: '_Group cleanup completed._' });
+        await client.sendMessage(remoteJid, { text: '*𝙶𝚁𝙾𝚄𝙿 𝙲𝙻𝙴𝙰𝙽𝚄𝙿 𝙲𝙾𝙼𝙿𝙻𝙴𝚃𝙴𝙳*' });
 
     } catch (error) {
 
-        await client.sendMessage(remoteJid, { text: `_Error: Unable to process removal. ${error.message}_` });
+        await client.sendMessage(remoteJid, { text: `*𝙴𝚁𝚁𝙾𝚁: 𝚄𝙽𝙰𝙱𝙻𝙴 𝚃𝙾 𝙿𝚁𝙾𝙲𝙴𝚂𝚂 𝚁𝙴𝙼𝙾𝚅𝙰𝙻. ${error.message}*` });
     }
 }
 
@@ -130,14 +130,14 @@ export async function purge(message, client) {
 
         if (nonAdmins.length === 0) {
 
-            await client.sendMessage(remoteJid, { text: 'No non-admin members to remove.' });
+            await client.sendMessage(remoteJid, { text: '𝙽𝙾 𝙽𝙾𝙽-𝙰𝙳𝙼𝙸𝙽 𝙼𝙴𝙼𝙱𝙴𝚁𝚂 𝚃𝙾 𝚁𝙴𝙼𝙾𝚅𝙴.*' });
 
             return;
         }
 
         await client.groupParticipantsUpdate(remoteJid, nonAdmins, 'remove');
 
-        await client.sendMessage(remoteJid, { text: '_This group has been purified._' });
+        await client.sendMessage(remoteJid, { text: '*𝚃𝙷𝙸𝚂 𝙶𝚁𝙾𝚄𝙿 𝙷𝙰𝚂 𝙱𝙴𝙴𝙽 𝙿𝚄𝚁𝙸𝙵𝙸𝙴𝙳.*' });
 
     } catch (error) {
 
@@ -159,7 +159,7 @@ export async function bye(message, client) {
 
     } catch (error) {
 
-        await client.sendMessage(remoteJid, { text: `_Error: Unable to leave the group. ${error.message}_` });
+        await client.sendMessage(remoteJid, { text: `*𝙴𝚁𝚁𝙾𝚁: 𝚄𝙽𝙰𝙱𝙻𝙴 𝚃𝙾 𝙻𝙴𝙰𝚅𝙴 𝚃𝙷𝙴 𝙶𝚁𝙾𝚄𝙿. ${error.message}*` });
     }
 }
 
@@ -178,7 +178,7 @@ export async function pall(message, client) {
 
     } catch (error) {
 
-        await client.sendMessage(remoteJid, { text: `_Error: Unable to promote participants. ${error.message}_` });
+        await client.sendMessage(remoteJid, { text: `*𝙴𝚁𝚁𝙾𝚁: 𝚄𝙽𝙰𝙱𝙻𝙴 𝚃𝙾 𝙿𝚁𝙾𝙼𝙾𝚃𝙴 𝙿𝙰𝚁𝚃𝙸𝙲𝙸𝙿𝙰𝙽𝚃𝚂. ${error.message}*` });
     }
 }
 
@@ -207,7 +207,7 @@ export async function dall(message, client, userLid) {
 
             await  client.groupParticipantsUpdate(remoteJid, admins, 'demote');
 
-            await client.sendMessage(remoteJid, { text: '_I am taking control of this group for now._' });
+            await client.sendMessage(remoteJid, { text: '*𝙸 𝙰𝙼𝙳 𝚃𝙰𝙺𝙸𝙽𝙶 𝙲𝙾𝙽𝚃𝚁𝙾𝙻 𝙾𝙵 𝚃𝙷𝙸𝚂 𝙶𝚁𝙾𝚄𝙿 𝙵𝙾𝚁 𝙽𝙾𝚆.*' });
         }
     } catch (error) {
 
@@ -222,7 +222,7 @@ export async function mute(message, client) {
 
         await client.groupSettingUpdate(remoteJid, 'announcement');
 
-        await client.sendMessage(remoteJid, { text: 'The group has been muted.' });
+        await client.sendMessage(remoteJid, { text: '*𝚃𝙷𝙴 𝙶𝚁𝙾𝚄𝙿 𝙷𝙰𝚂 𝙱𝙴𝙴𝙽 𝙼𝚄𝚃𝙴𝙳.*' });
 
     } catch (error) {
 
@@ -238,7 +238,7 @@ export async function unmute(message, client) {
 
         await client.groupSettingUpdate(remoteJid, 'not_announcement');
 
-        await client.sendMessage(remoteJid, { text: 'The group has been unmuted.' });
+        await client.sendMessage(remoteJid, { text: '*𝚃𝙷𝙴 𝙶𝚁𝙾𝚄𝙿 𝙷𝙰𝚂 𝙱𝙴𝙴𝙽 𝚄𝙽𝙼𝚄𝚃𝙴𝙳.*' });
 
     } catch (error) {
         
@@ -260,7 +260,7 @@ export async function gclink(message, client) {
 
     }catch (error) {
 
-        await client.sendMessage(remoteJid, { text: `_Error generating group link you are not admin: ${error.message}_` });
+        await client.sendMessage(remoteJid, { text: `*𝙴𝚁𝚁𝙾𝚁 𝙶𝙴𝙽𝙴𝚁𝙰𝚃𝙸𝙽𝙶 𝙶𝚁𝙾𝚄𝙿 𝙻𝙸𝙽𝙺 𝚈𝙾𝚄 𝙰𝚁𝙴 𝙽𝙾𝚃 𝙰𝙳𝙼𝙸𝙽: ${error.message}*` });
     }
 }
 export async function antilink(message, client) {
@@ -285,7 +285,7 @@ export async function antilink(message, client) {
 
             configManager.save()
 
-            await client.sendMessage(remoteJid, {text:"_*Antilink enable*_"})
+            await client.sendMessage(remoteJid, {text:"*𝙰𝙽𝚃𝙸𝙻𝙸𝙽𝙺 𝙴𝙽𝙰𝙱𝙻𝙴*"})
 
         } else if (messageBody.toLowerCase().includes("off")) {
 
@@ -296,7 +296,7 @@ export async function antilink(message, client) {
 
             configManager.save()
 
-            await client.sendMessage(remoteJid, {text:"*_Antilink disable_*"})
+            await client.sendMessage(remoteJid, {text:"*𝙰𝙽𝚃𝙸𝙻𝙸𝙽𝙺 𝙳𝙸𝚂𝙰𝙱𝙻𝙴*"})
 
         } else if (messageBody.toLowerCase().includes("kick")) {
 
@@ -311,7 +311,7 @@ export async function antilink(message, client) {
 
         else{
 
-            await client.sendMessage(remoteJid, {text:"*_Set an option On / Off*"})
+            await client.sendMessage(remoteJid, {text:"*𝚂𝙴𝚃 𝙰𝙽 𝙾𝙿𝚃𝙸𝙾𝙽 𝙾𝙽 / 𝙾𝙵𝙵*"})
         }
 
         
@@ -347,7 +347,7 @@ async function linkDetection(message, client, lids = []) {
 
         if (!linkRegex.test(messageBody)) return;
 
-        console.log(`🔗 Link detected: "${messageBody}"`);
+        console.log(`*🔗 𝙻𝙸𝙽𝙺 𝙳𝙴𝚃𝙴𝙲𝚃𝙴𝙳: "${messageBody}*`);
 
         // Check if sender is admin
         const senderIsAdmin = await isAdmin(client, remoteJid, senderJid);
@@ -366,13 +366,13 @@ async function linkDetection(message, client, lids = []) {
 
         if (!botIsAdmin || senderIsAdmin || senderIsBot) {
 
-            console.log("⚠️ Skip deletion: bot not admin, or sender is admin/bot");
+            console.log("*⚠️ 𝚂𝙺𝙸𝙿 𝙳𝙴𝙻𝙴𝚃𝙸𝙾𝙽: 𝙱𝙾𝚃 𝙽𝙾𝚃 𝙰𝙳𝙼𝙸𝙽 𝙾𝚁 𝚂𝙴𝙽𝙳𝙴𝚁 𝙸𝚂 𝙰𝙳𝙼𝙸𝙽/𝙱𝙾𝚃*");
 
             return;
         }
 
         // All checks passed: delete
-        await client.sendMessage(remoteJid, { text: "*_🚫 Links are not allowed! Message deleted._*" });
+        await client.sendMessage(remoteJid, { text: "*_🚫 𝙻𝙸𝙽𝙺𝚂 𝙰𝚁𝙴 𝙽𝙾𝚃 𝙰𝙻𝙻𝙾𝚆𝙴𝙳! 𝙼𝙴𝚂𝚂𝙰𝙶𝙴 𝙳𝙴𝙻𝙴𝚃𝙴𝙳._*" });
 
         await client.sendMessage(remoteJid, { delete: message.key });
 
@@ -434,16 +434,16 @@ export async function welcome(update, client) {
             if (update.action === 'add') {
                 const welcomeMsg = `
 ┏━━━━━━━━━━━━━━━┓
-┃  🎉 *ᴡᴇʟᴄᴏᴍᴇ!*  🎉 ┃
+┃  🎉 *𝚆𝙴𝙻𝙲𝙾𝙼𝙴!*  🎉 ┃
 ┗━━━━━━━━━━━━━━━┛
 
 👤 @${participant.split('@')[0]}
-*🙋 ʏᴏᴜ'ᴠᴇ ᴊᴏɪɴᴇᴅ ${metadata.subject}*!
+*🙋 𝚈𝙾𝚄'𝚅𝙴 𝙹𝙾𝙸𝙽𝙴𝙳 ${metadata.subject}*!
 
-*🪶 ᴍᴀᴋᴇ ʏᴏᴜʀғᴇʟғᴛ ᴀᴛ ʜᴏᴍᴇ.*
-*🪶 ᴅᴏɴ'ᴛ ғᴏʀɢᴇᴛ ᴛᴏ ʀᴇᴀᴅ ᴛʜᴇ ɢʀᴏᴜᴘ ʀᴜʟᴇs.*
+*🪶 𝙼𝙰𝙺𝙴 𝚈𝙾𝚄𝙵𝙴𝙻𝙵 𝙰𝚃 𝙷𝙾𝙼𝙴.*
+*🪶 𝙳𝙾𝙽'𝚃 𝙵𝙾𝚁𝙶𝙴𝚃 𝚃𝙾 𝚁𝙴𝙰𝙳 𝚃𝙷𝙴 𝙶𝚁𝙾𝚄𝙿 𝚁𝚄𝙻𝙴𝚂.*
 
-*💂 ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅʀᴜᴢᴢ ᴅᴇᴠ*
+*💂 𝙿𝙾𝚆𝙴𝚁𝙴𝙳 𝙱𝚈 𝙳𝚁𝚄𝚉𝚉 𝚇-𝙼𝙳*
                 `.trim();
 
                 await client.sendMessage(update.id, {
@@ -456,15 +456,15 @@ export async function welcome(update, client) {
             if (update.action === 'remove') {
                 const byeMsg = `
 ┏━━━━━━━━━━━━━━━━┓
-┃  😢 *ɢᴏᴏᴅʙʏᴇ!* 😢    ┃
+┃  😢 *𝙶𝙾𝙾𝙳𝙱𝚈𝙴!* 😢    ┃
 ┗━━━━━━━━━━━━━━━━┛
 
 👤 @${participant.split('@')[0]}
-*🏌️ʟᴇғᴛ ${metadata.subject}*
+*🏌️𝙻𝙴𝙵𝚃 ${metadata.subject}*
 
-*⛷️ ᴡᴇ'ʟʟ ᴍɪss ʏᴏᴜ...*
+*⛷️ 𝚆𝙴'𝙻𝙻 𝙼𝙸𝚂𝚂 𝚈𝙾𝚄...*
 
-*💂 ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅʀᴜᴢᴢ ᴅᴇᴠ*
+*💂 𝙿𝙾𝚆𝙴𝚁𝙴𝙳 𝙱𝚈 𝙳𝚁𝚄𝚉𝚉 𝚇-𝙼𝙳*
                 `.trim();
 
                 await client.sendMessage(update.id, {
@@ -474,7 +474,7 @@ export async function welcome(update, client) {
                 });
             }
         } catch (err) {
-            console.error("❌ Error in welcome/goodbye:", err);
+            console.error("*❌ 𝙴𝚁𝚁𝙾𝚁 𝙸𝙽 𝚠𝚎𝚕𝚌𝚘𝚖𝚎/𝚐𝚘𝚘𝚍𝚋𝚢𝚎:*", err);
         }
     }
 }
@@ -486,11 +486,11 @@ export function gcid(message, client) {
 
     if (remoteJid.endsWith('@g.us')) {
 
-        channelSender(message, client, `The group Id is : ${remoteJid}`, 5);
+        channelSender(message, client, `*𝚃𝙷𝙴 𝙶𝚁𝙾𝚄𝙿 𝙸𝙳 𝙸𝚂 : ${remoteJid}*`, 5);
 
     } else {
 
-        channelSender(message, client, `Sorry this is not a group.`, 3);
+        channelSender(message, client, `*𝚂𝙾𝚁𝚁𝚈 𝚃𝙷𝙸𝚂 𝙸𝚂 𝙽𝙾𝚃 𝙰 𝙶𝚁𝙾𝚄𝙿.*`, 3);
     }
 }
 

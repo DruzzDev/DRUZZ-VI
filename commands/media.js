@@ -24,7 +24,7 @@ export async function photo(message, client) {
 
         fs.writeFileSync(filename, buffer)
 
-        await client.sendMessage(message.key.remoteJid, { image: fs.readFileSync(filename), caption: "> 𝐏𝐎𝐖𝐄𝐑𝐄𝐃 𝐁𝐘 𝐃𝐑𝐔𝐙𝐙 𝐃𝐄𝐕" })
+        await client.sendMessage(message.key.remoteJid, { image: fs.readFileSync(filename), caption: "> *𝙿𝙾𝚆𝙴𝚁𝙴𝙳 𝙱𝚈 𝙳𝚁𝚄𝚉𝚉 𝚇-𝙼𝙳*" })
 
         fs.unlinkSync(filename)
 
@@ -32,7 +32,7 @@ export async function photo(message, client) {
 
         console.log(e)
 
-        await client.sendMessage(message.key.remoteJid, { text: "❌ Error converting sticker to image." })
+        await client.sendMessage(message.key.remoteJid, { text: "*❌ 𝙴𝚁𝚁𝙾𝚁 𝚃𝙾 𝙲𝙾𝙽𝚅𝙴𝚁𝚃𝙸𝙽𝙶 𝚂𝚃𝙸𝙲𝙺𝙴𝚁 𝚃𝙾 𝙸𝙼𝙰𝙶𝙴.*" })
     }
 }
 
@@ -69,7 +69,7 @@ export async function tomp3(message, client) {
 
     } catch (e) {
         console.log(e)
-        await client.sendMessage(message.key.remoteJid, { text: "❌ Error converting video to audio." })
+        await client.sendMessage(message.key.remoteJid, { text: "*❌ 𝙴𝚁𝚁𝙾𝚁 𝚃𝙾 𝙲𝙾𝙽𝚅𝙴𝚁𝚃𝙸𝙽𝙶 𝚅𝙸𝙳𝙴𝙾 𝚃𝙾 𝙰𝚄𝙳𝙸𝙾*" })
     }
 }
 
@@ -78,7 +78,7 @@ export async function sticker(message, client) {
     const source = quoted?.imageMessage || quoted?.videoMessage ||
         message.message?.imageMessage || message.message?.videoMessage;
     const wrapped = quoted ? { message: quoted } : { message: message.message };
-    if (!source) return client.sendMessage(message.key.remoteJid, { text: '❌ Reply to an image/video or send one with .sticker.' }, { quoted: message });
+    if (!source) return client.sendMessage(message.key.remoteJid, { text: '❌ 𝚁𝙴𝙿𝙻𝚈 𝚃𝙾 𝙰𝙽 𝙸𝙼𝙰𝙶𝙴/𝚅𝙸𝙳𝙴𝙾 𝙾𝚁 𝚂𝙴𝙽𝙳 𝙾𝙽𝙴 𝚆𝙸𝚃𝙷 .𝚂𝚃𝙸𝙲𝙺𝙴𝚁*' }, { quoted: message });
 
     try {
         const buffer = await downloadMediaMessage(wrapped, 'buffer', {}, { reuploadRequest: client.reuploadRequest });
@@ -90,7 +90,7 @@ export async function sticker(message, client) {
         await client.sendMessage(message.key.remoteJid, { sticker: await sticker.toBuffer() }, { quoted: message });
     } catch (e) {
         console.error('sticker:', e);
-        await client.sendMessage(message.key.remoteJid, { text: `❌ Sticker error: ${e.message}` }, { quoted: message });
+        await client.sendMessage(message.key.remoteJid, { text: `*❌ 𝚂𝚃𝙸𝙲𝙺𝙴𝚁 𝙴𝚁𝚁𝙾𝚁: ${e.message}*` }, { quoted: message });
     }
 }
 
@@ -100,7 +100,7 @@ export async function getProfilePicture(message, client) {
         const url = await client.profilePictureUrl(jid, 'image');
         await client.sendMessage(message.key.remoteJid, { image: { url }, caption: '🖼️ Profile picture' }, { quoted: message });
     } catch {
-        await client.sendMessage(message.key.remoteJid, { text: '❌ Profile picture not available.' }, { quoted: message });
+        await client.sendMessage(message.key.remoteJid, { text: '*❌ 𝙿𝚁𝙾𝙵𝙸𝙻𝙴 𝙿𝙸𝙲𝚃𝚄𝚁𝙴 𝙽𝙾𝚃 𝙰𝚅𝙰𝙸𝙻𝙰𝙱𝙻𝙴.*' }, { quoted: message });
     }
 }
 
@@ -109,15 +109,15 @@ export async function setProfilePicture(message, client) {
     const quoted = message.message?.extendedTextMessage?.contextInfo?.quotedMessage;
     const source = quoted?.imageMessage || message.message?.imageMessage;
     const wrapped = quoted ? { message: quoted } : { message: message.message };
-    if (!source) return client.sendMessage(remoteJid, { text: '❌ Reply to an image with .setpp.' }, { quoted: message });
+    if (!source) return client.sendMessage(remoteJid, { text: '*❌ 𝚁𝙴𝙿𝙻𝚈 𝚃𝙾 𝙰𝙽 𝙸𝙼𝙰𝙶𝙴 𝚆𝙸𝚃𝙷 .𝚂𝙴𝚃𝙿𝙿*' }, { quoted: message });
 
     try {
         const buffer = await downloadMediaMessage(wrapped, 'buffer', {}, { reuploadRequest: client.reuploadRequest });
         const me = client.user?.id?.split(':')[0] + '@s.whatsapp.net';
         await client.updateProfilePicture(me, buffer);
-        await client.sendMessage(remoteJid, { text: '✅ Profile picture updated.' }, { quoted: message });
+        await client.sendMessage(remoteJid, { text: '*✅ 𝙿𝚁𝙾𝙵𝙸𝙻𝙴 𝙿𝙸𝙲𝚃𝚄𝚁𝙴 𝚄𝙿𝙳𝙰𝚃𝙴𝙳.*' }, { quoted: message });
     } catch (e) {
-        await client.sendMessage(remoteJid, { text: `❌ Could not update profile picture: ${e.message}` }, { quoted: message });
+        await client.sendMessage(remoteJid, { text: `*❌ 𝚅𝙾𝚄𝙻𝙳 𝙽𝙾𝚃 𝚄𝙿𝙳𝙰𝚃𝙴 𝙿𝚁𝙾𝙵𝙸𝙻𝙴: ${e.message}*` }, { quoted: message });
     }
 }
 

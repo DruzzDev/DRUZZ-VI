@@ -23,16 +23,16 @@ export async function tagall(message, client) {
 
         const tagMessage = `
 ┏━━━━━━━━━━━━━━━━━━━┓
-┃  📢 *ɢʀᴏᴜᴘ ᴛᴀɢ!*  📢      ┃
+┃  📢 *𝙶𝚁𝙾𝚄𝙿 𝚃𝙰𝙶!*  📢      ┃
 ┗━━━━━━━━━━━━━━━━━━━┛
 
-👥 *ɢʀᴏᴜᴘ:* ${groupMetadata.subject}
+👥 *𝙶𝚁𝙾𝚄𝙿:* ${groupMetadata.subject}
 
 ${mentionsText}
 
-💬 *ᴍᴇssᴀɢᴇ ʙʏ:* @${message.key.participant?.split('@')[0] || 'Someone'}
+💬 *𝙼𝙴𝚂𝚂𝙰𝙶𝙴 𝙱𝚈:* @${message.key.participant?.split('@')[0] || 'Someone'}
 
-> ᴘᴏᴡᴇʀᴇᴅ ʙʏ ${OWNER_NAME} 🥷🏾
+> *𝙿𝙾𝚆𝙴𝚁𝙴𝙳 𝙱𝚈 ${OWNER_NAME} 🥷*
         `.trim();
 
         await client.sendMessage(remoteJid, { text: tagMessage, mentions: participants });
@@ -88,7 +88,10 @@ export async function respond(message, client, lid) {
 
     if (!configManager.config?.users[number]) return;
     const tagRespond = configManager.config.users[number]?.response;
-    if (!message.key.fromMe && tagRespond && (messageBody.includes(`@${number}`) || messageBody.includes("@" + lid[0].split("@")[0]))) {
+    const lidNumber = lid?.[0]?.split('@')[0] || '';
+    const mentionedByNumber = messageBody.includes(`@${number}`);
+    const mentionedByLid = Boolean(lidNumber) && messageBody.includes(`@${lidNumber}`);
+    if (!message.key.fromMe && tagRespond && (mentionedByNumber || mentionedByLid)) {
         console.log("yes");
         const inputAudio = configManager.config.users[number]?.tagAudioPath || "tag.mp3";
         const outputAudio = path.join("temp", `tag_${Date.now()}.ogg`);
