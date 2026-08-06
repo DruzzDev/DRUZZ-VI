@@ -97,7 +97,6 @@ export async function info(message, client) {
 *║德│┃✮ 𝙺𝙸𝙲𝙺𝙰𝙻𝙻*
 *║德│┃✮ 𝙿𝚁𝙾𝙼𝙾𝚃𝙴𝙰𝙻𝙻*
 *║德│┃✮ 𝙳𝙴𝙼𝙾𝚃𝙴𝙰𝙻𝙻*
-*║德│┃✮ 𝙳𝙴𝙻𝙴𝚃𝙴*
 *║╰━━━━━━━━━━━━*
 *║*
 *║━━━━━ 𝙼𝙴𝙳𝙸𝙰 ━━━━━╮*
@@ -136,14 +135,13 @@ export async function info(message, client) {
 *║╰━━━━━━━━━━━━*
 *╰━━━━━━━━━━━━━━━╯*
 
-
 > *𝙿𝙾𝚆𝙴𝚁𝙴𝙳 𝙱𝚈 ${OWNER_NAME}*
     `
 ;
 
     await client.sendMessage(remoteJid, {
 
-        image: { url: "menu.jpg" },
+        image: fs.readFileSync(path.resolve("./menu.jpg")),
 
         caption: t,
 

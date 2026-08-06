@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "start": "node index.js",
-    "restart": "rm -r auth_info_baileys || node index.js"
+    "restart": "npm start"
   },
   "repository": {
     "type": "git",

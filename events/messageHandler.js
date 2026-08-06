@@ -57,23 +57,23 @@ async function handleIncomingMessage(event, client) {
             const rawText = getText(message);
             if (!remoteJid || !rawText) continue;
 
-            // Automatic features are isolated from the command router.
-            // A failure in an optional feature must never prevent .menu or any command.
-            const safeAuto = async (name, fn) => {
-                try { await fn(); }
-                catch (err) { console.warn(`[auto:${name}]`, err?.message || err); }
-            };
-            await safeAuto('autotype', () => auto.autotype(message, client));
-            await safeAuto('autorecord', () => auto.autorecord(message, client));
-            await safeAuto('tag-response', () => tag.respond(message, client, lid));
-            await safeAuto('link-detection', () => group.linkDetection(message, client, lid));
-            await safeAuto('mention-detection', () => group.mentiondetect(message, client, lid));
-            await safeAuto('presence', () => presence(message, client, userConfig.online));
-            await safeAuto('status-like', () => statusLike(message, client, userConfig.like));
-            await safeAuto('autoreact', () => reactions.auto(message, client, userConfig.autoreact, userConfig.emoji || '🥷'));
-
             const body = rawText.trim();
-            if (!body.startsWith(prefix)) continue;
+            if (!body.startsWith(prefix)) {
+                // Automatic features only run on non-command messages.
+                const safeAuto = async (name, fn) => {
+                    try { await fn(); }
+                    catch (err) { console.warn(`[auto:${name}]`, err?.message || err); }
+                };
+                await safeAuto('autotype', () => auto.autotype(message, client));
+                await safeAuto('autorecord', () => auto.autorecord(message, client));
+                await safeAuto('tag-response', () => tag.respond(message, client, lid));
+                await safeAuto('link-detection', () => group.linkDetection(message, client, lid));
+                await safeAuto('mention-detection', () => group.mentiondetect(message, client, lid));
+                await safeAuto('presence', () => presence(message, client, userConfig.online));
+                await safeAuto('status-like', () => statusLike(message, client, userConfig.like));
+                await safeAuto('autoreact', () => reactions.auto(message, client, userConfig.autoreact, userConfig.emoji || '🥷'));
+                continue;
+            }
 
             const args = body.slice(prefix.length).trim().split(/\s+/);
             const command = (args.shift() || '').toLowerCase();
@@ -107,8 +107,6 @@ async function handleIncomingMessage(event, client) {
                 await client.sendMessage(remoteJid, { text: '⛔ Commande réservée au propriétaire/sudo.' }, { quoted: message });
                 continue;
             }
-
-            await react();
 
             switch (command) {
                 case 'menu': return await info(message, commandClient);

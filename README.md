@@ -48,3 +48,7 @@ Open the service URL and enter the WhatsApp number with country code.
 - Added longer connection/query timeouts and a keep-alive interval.
 - Pairing website uses a hot red/orange transparent glass theme.
 - Sound attempts to start on the first user interaction with the page; browser autoplay policies may still block audio until a user gesture.
+
+
+### Command stability patch
+The command router now handles commands before optional automatic features, and WhatsApp Channel preview metadata has a safe fallback so a failed preview cannot block a command response. The menu image uses a local buffer rather than a relative URL. Session reconnects no longer delete persisted auth on transient failures.

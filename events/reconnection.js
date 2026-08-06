@@ -90,6 +90,8 @@ async function reconnect() {
 
 async function startSession(targetNumber) {
 
+    if (sessions[targetNumber]?.user) return sessions[targetNumber];
+
     let count = 1;
 
     const sessionPath = `./sessions/${targetNumber}`;
@@ -123,12 +125,13 @@ async function startSession(targetNumber) {
 
                 console.log(`🔄 Attempting reconnect for ${targetNumber}...`);
 
-                startSession(targetNumber)
+                setTimeout(() => startSession(targetNumber).catch(err =>
+                    console.error(`❌ Reconnect failed for ${targetNumber}:`, err)
+                ), 1500);
 
             } else {
 
                 console.log(`🚫 Logged out: removing session for ${targetNumber}`);
-
                 removeSession(targetNumber);
             }
 
