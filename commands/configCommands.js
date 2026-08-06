@@ -3,7 +3,7 @@ import configManager from '../utils/manageConfigs.js';
 function ensure(number) {
     configManager.config.users ||= {};
     configManager.config.users[number] ||= {
-        sudoList: [], prefix: '.', welcome: false, goodbye: false, antilink: false, online: false,
+        sudoList: [], prefix: '.', welcome: false, online: false,
         type: false, record: false, autoreact: false, like: false,
         response: true, emoji: '🇭🇹'
     };
@@ -15,7 +15,6 @@ export async function toggle(message, client, number, command, value = '') {
     const key = {
         online: 'online',
         welcome: 'welcome',
-        goodbye: 'goodbye',
         autotype: 'type',
         autorecord: 'record',
         autoreact: 'autoreact',

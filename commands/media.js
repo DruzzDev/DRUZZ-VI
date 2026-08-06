@@ -62,7 +62,7 @@ export async function tomp3(message, client) {
             })
         })
 
-        await client.sendMessage(message.key.remoteJid, { audio: fs.readFileSync(outputPath), mimetype: 'audio/mpeg', ptt: false })
+        await client.sendMessage(message.key.remoteJid, { audio: fs.readFileSync(outputPath), mimetype: 'audio/mp4', ptt: false })
 
         fs.unlinkSync(inputPath)
         fs.unlinkSync(outputPath)

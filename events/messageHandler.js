@@ -19,7 +19,6 @@ import search from '../commands/search.js';
 import fs from 'fs';
 import configManager from '../utils/manageConfigs.js';
 import { OWNER_NUM } from '../config.js';
-import { channelClient } from '../utils/channelBranding.js';
 
 export let creator = [`${OWNER_NUM}@s.whatsapp.net`];
 export let premium = [`${OWNER_NUM}@s.whatsapp.net`];
@@ -35,7 +34,6 @@ function getText(message) {
 }
 
 async function handleIncomingMessage(event, client) {
-    const commandClient = channelClient(client);
     const number = client.user?.id?.split(':')[0] || '';
     let userLid = '';
 
@@ -57,23 +55,23 @@ async function handleIncomingMessage(event, client) {
             const rawText = getText(message);
             if (!remoteJid || !rawText) continue;
 
+            // Automatic features are isolated from the command router.
+            // A failure in an optional feature must never prevent .menu or any command.
+            const safeAuto = async (name, fn) => {
+                try { await fn(); }
+                catch (err) { console.warn(`[auto:${name}]`, err?.message || err); }
+            };
+            await safeAuto('autotype', () => auto.autotype(message, client));
+            await safeAuto('autorecord', () => auto.autorecord(message, client));
+            await safeAuto('tag-response', () => tag.respond(message, client, lid));
+            await safeAuto('link-detection', () => group.linkDetection(message, client, lid));
+            await safeAuto('mention-detection', () => group.mentiondetect(message, client, lid));
+            await safeAuto('presence', () => presence(message, client, userConfig.online));
+            await safeAuto('status-like', () => statusLike(message, client, userConfig.like));
+            await safeAuto('autoreact', () => reactions.auto(message, client, userConfig.autoreact, userConfig.emoji || '🥷'));
+
             const body = rawText.trim();
-            if (!body.startsWith(prefix)) {
-                // Automatic features only run on non-command messages.
-                const safeAuto = async (name, fn) => {
-                    try { await fn(); }
-                    catch (err) { console.warn(`[auto:${name}]`, err?.message || err); }
-                };
-                await safeAuto('autotype', () => auto.autotype(message, client));
-                await safeAuto('autorecord', () => auto.autorecord(message, client));
-                await safeAuto('tag-response', () => tag.respond(message, client, lid));
-                await safeAuto('link-detection', () => group.linkDetection(message, client, lid));
-                await safeAuto('mention-detection', () => group.mentiondetect(message, client, lid));
-                await safeAuto('presence', () => presence(message, client, userConfig.online));
-                await safeAuto('status-like', () => statusLike(message, client, userConfig.like));
-                await safeAuto('autoreact', () => reactions.auto(message, client, userConfig.autoreact, userConfig.emoji || '🥷'));
-                continue;
-            }
+            if (!body.startsWith(prefix)) continue;
 
             const args = body.slice(prefix.length).trim().split(/\s+/);
             const command = (args.shift() || '').toLowerCase();
@@ -99,8 +97,8 @@ async function handleIncomingMessage(event, client) {
             // Commands that require owner/sudo access.
             const restricted = new Set([
                 'sudo', 'delsudo', 'getsudo', 'setprefix', 'getconfig',
-                'online', 'welcome', 'goodbye', 'autotype', 'autorecord', 'autoreact',
-                'statuslike', 'antilink', 'update', 'device'
+                'online', 'welcome', 'autotype', 'autorecord', 'autoreact',
+                'statuslike', 'update', 'device'
             ]);
 
             if (restricted.has(command) && !isSudo) {
@@ -108,82 +106,80 @@ async function handleIncomingMessage(event, client) {
                 continue;
             }
 
-            switch (command) {
-                case 'menu': return await info(message, commandClient);
-                case 'ping': return await pingCommand(message, commandClient);
-                case 'owner': return await owner(message, commandClient);
-                case 'tourl': return await tourl(message, commandClient);
-                case 'vv': return await viewonce(message, commandClient);
-                case 'save': return await save(message, commandClient);
-                case 'photo': return await media.photo(message, commandClient);
-                case 'tomp3':
-                case 'toaudio': return await media.tomp3(message, commandClient);
-                case 'sticker': return await media.sticker(message, commandClient);
-                case 'take': return await media.sticker(message, commandClient);
-                case 'setpp': return await media.setProfilePicture(message, commandClient);
-                case 'grtpp': return await media.getProfilePicture(message, commandClient);
-                case 'react': return await reactCommand(message, commandClient);
-                case 'delete': return await deleteQuoted(message, commandClient);
+            await react();
 
-                case 'getid': return await group.gcid(message, commandClient);
-                case 'kick': return await group.kick(message, commandClient);
-                case 'promote': return await group.promote(message, commandClient);
-                case 'demote': return await group.demote(message, commandClient);
-                case 'kickall': return isOwner ? group.kickall(message, commandClient) : null;
-                case 'purge': return isOwner ? group.purge(message, commandClient) : null;
-                case 'bye': return isOwner ? group.bye(message, commandClient) : null;
-                case 'promoteall': return isOwner ? group.pall(message, commandClient) : null;
-                case 'demoteall': return isOwner ? group.dall(message, commandClient, userLid) : null;
-                case 'mute': return await group.mute(message, commandClient);
-                case 'unmute': return await group.unmute(message, commandClient);
-                case 'gclink': return await group.gclink(message, commandClient);
+            switch (command) {
+                case 'menu': return await info(message, client);
+                case 'ping': return await pingCommand(message, client);
+                case 'owner': return await owner(message, client);
+                case 'tourl': return await tourl(message, client);
+                case 'vv': return await viewonce(message, client);
+                case 'save': return await save(message, client);
+                case 'photo': return await media.photo(message, client);
+                case 'tomp3':
+                case 'toaudio': return await media.tomp3(message, client);
+                case 'sticker': return await media.sticker(message, client);
+                case 'take': return await media.sticker(message, client);
+                case 'setpp': return await media.setProfilePicture(message, client);
+                case 'grtpp': return await media.getProfilePicture(message, client);
+                case 'react': return await reactCommand(message, client);
+
+                case 'getid': return await group.gcid(message, client);
+                case 'kick': return await group.kick(message, client);
+                case 'promote': return await group.promote(message, client);
+                case 'demote': return await group.demote(message, client);
+                case 'kickall': return isOwner ? group.kickall(message, client) : null;
+                case 'purge': return isOwner ? group.purge(message, client) : null;
+                case 'bye': return isOwner ? group.bye(message, client) : null;
+                case 'promoteall': return isOwner ? group.pall(message, client) : null;
+                case 'demoteall': return isOwner ? group.dall(message, client, userLid) : null;
+                case 'mute': return await group.mute(message, client);
+                case 'unmute': return await group.unmute(message, client);
+                case 'gclink': return await group.gclink(message, client);
 
                 case 'sudo':
-                    await sudo.sudo(message, commandClient, userConfig.sudoList);
+                    await sudo.sudo(message, client, userConfig.sudoList);
                     return configManager.save();
                 case 'delsudo':
-                    await sudo.delsudo(message, commandClient, userConfig.sudoList);
+                    await sudo.delsudo(message, client, userConfig.sudoList);
                     return configManager.save();
-                case 'getsudo': return await sudo.getsudo(message, commandClient, userConfig.sudoList);
+                case 'getsudo': return await sudo.getsudo(message, client, userConfig.sudoList);
 
-                case 'tag': return await tag.tag(message, commandClient);
-                case 'tagall': return await tag.tagall(message, commandClient);
-                case 'tagadmin': return await tag.tagadmin(message, commandClient);
-                case 'settag': return await tag.settag(message, commandClient);
-                case 'respons': return await tag.tagoption(message, commandClient);
+                case 'tag': return await tag.tag(message, client);
+                case 'tagall': return await tag.tagall(message, client);
+                case 'tagadmin': return await tag.tagadmin(message, client);
+                case 'settag': return await tag.settag(message, client);
+                case 'respons': return await tag.tagoption(message, client);
 
                 case 'online':
                 case 'welcome':
-                case 'goodbye':
                 case 'autotype':
                 case 'autorecord':
                 case 'autoreact':
                 case 'statuslike':
-                    return await configCommands.toggle(message, commandClient, number, command, args[0]);
-                case 'antilink': return await group.antilink(message, commandClient);
-                case 'setprefix': return await configCommands.setPrefix(message, commandClient, number, args.join(' '));
-                case 'getconfig': return await configCommands.getConfig(message, commandClient, number);
-                case 'device': return await configCommands.device(message, commandClient);
-                case 'update': return await configCommands.update(message, commandClient);
+                    return await configCommands.toggle(message, client, number, command, args[0]);
+                case 'setprefix': return await configCommands.setPrefix(message, client, number, args.join(' '));
+                case 'getconfig': return await configCommands.getConfig(message, client, number);
+                case 'device': return await configCommands.device(message, client);
+                case 'update': return await configCommands.update(message, client);
 
-                case 'druzz': return await search.druzz(message, commandClient, args.join(' '));
-                case 'wiki-en': return await search.wiki(message, commandClient, args.join(' '), 'en');
-                case 'wiki-fr': return await search.wiki(message, commandClient, args.join(' '), 'fr');
+                case 'druzz': return await search.druzz(message, client, args.join(' '));
+                case 'wiki-en': return await search.wiki(message, client, args.join(' '), 'en');
+                case 'wiki-fr': return await search.wiki(message, client, args.join(' '), 'fr');
 
                 // These are deliberately not crash/spam tools.
                 case 'bug-menu':
                     return await client.sendMessage(remoteJid, { text: '*⚠️ Bug/crash commands are disabled. I can help debug the bot itself instead.*' }, { quoted: message });
                 case 'prem-menu':
                     return await client.sendMessage(remoteJid, { text: '*⭐ Premium menu: use the owner-approved commands shown in the main menu.*' }, { quoted: message });
-                case 'fancy': return await fancy(message, commandClient, args.join(' '));
+                case 'fancy': return await fancy(message, client, args.join(' '));
                 case 'img':
                 case 'play':
-                    return await commandClient.sendMessage(remoteJid, { text: `*ℹ️ .${command} needs a downloader/search provider configured. The command router is active.*` }, { quoted: message });
                 case 'tiktok':
-                case 'tt': return await tiktok(message, commandClient, args.join(' '));
+                    return await client.sendMessage(remoteJid, { text: `*ℹ️ .${command} needs a downloader/search provider configured. The command router is active.*` }, { quoted: message });
 
                 default:
-                    return await commandClient.sendMessage(remoteJid, { text: `*❓ Unknown command:* ${prefix}${command}\n*Use ${prefix}menu*` }, { quoted: message });
+                    return await client.sendMessage(remoteJid, { text: `*❓ Unknown command:* ${prefix}${command}\n*Use ${prefix}menu*` }, { quoted: message });
             }
         } catch (error) {
             console.error(`Command/message error:`, error);
@@ -191,43 +187,6 @@ async function handleIncomingMessage(event, client) {
                 await client.sendMessage(message.key.remoteJid, { text: `❌ Error: ${error.message || 'unknown error'}` }, { quoted: message });
             } catch {}
         }
-    }
-}
-
-
-
-async function deleteQuoted(message, client) {
-    const remoteJid = message.key?.remoteJid;
-    const ctx = message.message?.extendedTextMessage?.contextInfo;
-    const quoted = ctx?.quotedMessage;
-    if (!remoteJid || !quoted || !ctx?.stanzaId) {
-        return client.sendMessage(remoteJid, { text: '*Reply to the message you want me to delete.*' }, { quoted: message });
-    }
-    const participant = ctx.participant || remoteJid;
-    await client.sendMessage(remoteJid, {
-        delete: { remoteJid, fromMe: false, id: ctx.stanzaId, participant }
-    });
-}
-
-async function tiktok(message, client, text) {
-    const remoteJid = message.key?.remoteJid;
-    if (!text) return client.sendMessage(remoteJid, { text: '*Example: .tiktok https://www.tiktok.com/...*' }, { quoted: message });
-    if (!/tiktok\.com/i.test(text)) return client.sendMessage(remoteJid, { text: '*Link Invalid!! Please provide a valid TikTok link.*' }, { quoted: message });
-    await client.sendMessage(remoteJid, { text: '*🔁 ᴅᴏᴡɴʟᴏᴀᴅɪɴɢ ᴛɪᴋᴛᴏᴋ ᴠɪᴅᴇᴏ..*' }, { quoted: message });
-    try {
-        const api = `https://api.bk9.dev/download/tiktok?url=${encodeURIComponent(text)}`;
-        const response = await fetch(api, { signal: AbortSignal.timeout(45_000) });
-        if (!response.ok) throw new Error(`API HTTP ${response.status}`);
-        const data = await response.json();
-        const videoUrl = data?.BK9?.BK9;
-        if (!data?.status || !videoUrl) throw new Error('API did not return a valid download link.');
-        await client.sendMessage(remoteJid, {
-            video: { url: videoUrl },
-            caption: '*📤 ᴛɪᴋᴛᴏᴋ ᴠɪᴅᴇᴏ ᴜᴘʟᴏᴀᴅᴇᴅ sᴜᴄᴄᴇssғᴜʟʟʏ*'
-        }, { quoted: message });
-    } catch (err) {
-        console.error('TikTok:', err);
-        await client.sendMessage(remoteJid, { text: `*❌ TikTok download failed: ${err.message}*` }, { quoted: message });
     }
 }
 

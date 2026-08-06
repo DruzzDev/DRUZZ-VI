@@ -6,12 +6,10 @@ import { OWNER_NAME } from '../config.js';
 export async function tourl(message, client) {
     const remoteJid = message.key.remoteJid;
     const quoted = message.message?.extendedTextMessage?.contextInfo?.quotedMessage;
-    const current = message.message;
-    const mediaMessage = quoted || current;
-    if (!mediaMessage) return client.sendMessage(remoteJid, { text: '❌ Reply to an image, video, audio, or document.' }, { quoted: message });
+    if (!quoted) return client.sendMessage(remoteJid, { text: '❌ Reply to an image, video, audio, or document.' }, { quoted: message });
 
-    const mimeType = mediaMessage.imageMessage?.mimetype || mediaMessage.videoMessage?.mimetype ||
-        mediaMessage.audioMessage?.mimetype || mediaMessage.documentMessage?.mimetype;
+    const mimeType = quoted.imageMessage?.mimetype || quoted.videoMessage?.mimetype ||
+        quoted.audioMessage?.mimetype || quoted.documentMessage?.mimetype;
     if (!mimeType) return client.sendMessage(remoteJid, { text: '❌ Unsupported media.' }, { quoted: message });
 
     const tempDir = './temp';
@@ -21,7 +19,7 @@ export async function tourl(message, client) {
 
     try {
         const buffer = await downloadMediaMessage(
-            { message: mediaMessage },
+            { message: quoted },
             'buffer',
             {},
             { reuploadRequest: client.reuploadRequest }

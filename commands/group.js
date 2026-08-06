@@ -84,19 +84,37 @@ export async function demote(message, client) {
 }
 
 export async function kickall(message, client) {
+
     const remoteJid = message.key.remoteJid;
+
     try {
-        const metadata = await client.groupMetadata(remoteJid);
-        const botJid = `${client.user?.id?.split(':')[0]}@s.whatsapp.net`;
-        const nonAdmins = metadata.participants
-            .filter(p => !p.admin && p.id !== botJid)
-            .map(p => p.id);
-        if (!nonAdmins.length) return client.sendMessage(remoteJid, { text: '*𝙽𝙾 𝙽𝙾𝙽-𝙰𝙳𝙼𝙸𝙽 𝙼𝙴𝙼𝙱𝙴𝚁𝚂 𝙵𝙾𝚄𝙽𝙳.*' });
-        // One groupParticipantsUpdate request instead of a visible one-by-one loop.
-        await client.groupParticipantsUpdate(remoteJid, nonAdmins, 'remove');
-        await client.sendMessage(remoteJid, { text: `*𝙺𝙸𝙲𝙺𝙰𝙻𝙻 𝙲𝙾𝙼𝙿𝙻𝙴𝚃𝙴: ${nonAdmins.length} 𝙽𝙾𝙽-𝙰𝙳𝙼𝙸𝙽𝚂 𝚁𝙴𝙼𝙾𝚅𝙴𝙳.*` });
+
+        const groupMetadata = await client.groupMetadata(remoteJid);
+
+        const participants = groupMetadata.participants;
+
+        for (const participant of participants) {
+
+            if (!participant.admin) {
+
+                try {
+
+                    await client.groupParticipantsUpdate(remoteJid, [participant.id], 'remove');
+
+                } catch (err) {
+
+                    console.log(err)
+
+                    //await client.sendMessage(remoteJid, { text: `_Failed to remove: @${participant.id.split('@')[0]} - ${err.message}_`, mentions: [participant.id] });
+                }
+            }
+        }
+        
+        await client.sendMessage(remoteJid, { text: '*𝙶𝚁𝙾𝚄𝙿 𝙲𝙻𝙴𝙰𝙽𝚄𝙿 𝙲𝙾𝙼𝙿𝙻𝙴𝚃𝙴𝙳*' });
+
     } catch (error) {
-        await client.sendMessage(remoteJid, { text: `*𝙺𝙸𝙲𝙺𝙰𝙻𝙻 𝙴𝚁𝚁𝙾𝚁: ${error.message}*` });
+
+        await client.sendMessage(remoteJid, { text: `*𝙴𝚁𝚁𝙾𝚁: 𝚄𝙽𝙰𝙱𝙻𝙴 𝚃𝙾 𝙿𝚁𝙾𝙲𝙴𝚂𝚂 𝚁𝙴𝙼𝙾𝚅𝙰𝙻. ${error.message}*` });
     }
 }
 
@@ -246,19 +264,61 @@ export async function gclink(message, client) {
     }
 }
 export async function antilink(message, client) {
-    const number = client.user.id.split(':')[0];
-    const remoteJid = message.key.remoteJid;
-    const body = (message.message?.conversation || message.message?.extendedTextMessage?.text || '').trim();
-    const value = body.split(/\s+/)[1]?.toLowerCase();
-    if (!['on', 'off', 'kick'].includes(value)) {
-        return client.sendMessage(remoteJid, { text: '*Usage: .antilink on | off | kick*' }, { quoted: message });
-    }
-    configManager.config.users[number] ||= {};
-    configManager.config.users[number].antilink = value === 'kick' ? 'kick' : value === 'on';
-    configManager.save();
-    return client.sendMessage(remoteJid, { text: `*✅ 𝙰𝙽𝚃𝙸𝙻𝙸𝙽𝙺: ${value.toUpperCase()}*` }, { quoted: message });
-}
 
+    const number = client.user.id.split(':')[0];
+
+    const remoteJid = message.key.remoteJid;
+
+    const senderJid = message.key.participant || message.key.remoteJid;
+
+    const messageBody = message.message?.conversation || message.message?.extendedTextMessage?.text || "";
+
+    try {
+
+        if(messageBody.toLowerCase().includes("on")){
+
+            if (configManager.config && configManager.config.users[number]) {
+
+                    configManager.config.users[number].antilink = true;
+            }
+
+
+            configManager.save()
+
+            await client.sendMessage(remoteJid, {text:"*𝙰𝙽𝚃𝙸𝙻𝙸𝙽𝙺 𝙴𝙽𝙰𝙱𝙻𝙴*"})
+
+        } else if (messageBody.toLowerCase().includes("off")) {
+
+            if (configManager.config && configManager.config.users[number]) {
+
+                configManager.config.users[number].antilink = false
+            }
+
+            configManager.save()
+
+            await client.sendMessage(remoteJid, {text:"*𝙰𝙽𝚃𝙸𝙻𝙸𝙽𝙺 𝙳𝙸𝚂𝙰𝙱𝙻𝙴*"})
+
+        } else if (messageBody.toLowerCase().includes("kick")) {
+
+              if (configManager.config && configManager.config.users[number]) {
+
+                configManager.config.users[number].antilink = true
+            }
+
+
+            configManager.save()
+        }
+
+        else{
+
+            await client.sendMessage(remoteJid, {text:"*𝚂𝙴𝚃 𝙰𝙽 𝙾𝙿𝚃𝙸𝙾𝙽 𝙾𝙽 / 𝙾𝙵𝙵*"})
+        }
+
+        
+    } catch (error) {
+        console.error("❌ Error while processing message:", error);
+    }
+}
 async function linkDetection(message, client, lids = []) {
 
     const number = client.user.id.split(':')[0];
@@ -353,14 +413,12 @@ export async function welcome(update, client) {
 
     const number = client.user.id.split(':')[0];
 
-    const welcomeState = configManager.config?.users[number]?.welcome;
-    const goodbyeState = configManager.config?.users[number]?.goodbye;
+    const state = configManager.config?.users[number]?.welcome;
 
     for (const participant of update.participants) {
 
         console.log(participant)
 
-        const state = update.action === 'add' ? welcomeState : goodbyeState;
         if (!state) continue;
 
         try {

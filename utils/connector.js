@@ -1,7 +1,6 @@
 import { makeWASocket, useMultiFileAuthState, DisconnectReason, fetchLatestBaileysVersion } from 'baileys';
 import configManager from './manageConfigs.js';
 import fs from 'fs';
-import { welcome } from '../commands/group.js';
 
 const SESSIONS_FILE = "sessions.json";
 const sessions = {};
@@ -60,7 +59,6 @@ function ensureUserConfig(number) {
         type: false,
         like: false,
         online: false,
-        goodbye: false,
         emoji: "🇭🇹"
     };
     configManager.config.users.root ||= {};
@@ -144,10 +142,6 @@ export async function startSession(targetNumber, handler, makePrimary = true, on
         } catch (err) {
             console.error("Message handler error:", err);
         }
-    });
-
-    sock.ev.on('group-participants.update', async update => {
-        try { await welcome(update, sock); } catch (err) { console.error('Group participant handler:', err); }
     });
 
     if (!state.creds.registered) {

@@ -134,6 +134,7 @@ export async function info(message, client) {
 *║德│┃✮ 𝚁𝙴𝚂𝙿𝙾𝙽𝚂*
 *║╰━━━━━━━━━━━━*
 *╰━━━━━━━━━━━━━━━╯*
+https://druzz-xmd.up.railway.app
 
 > *𝙿𝙾𝚆𝙴𝚁𝙴𝙳 𝙱𝚈 ${OWNER_NAME}*
     `
@@ -141,7 +142,7 @@ export async function info(message, client) {
 
     await client.sendMessage(remoteJid, {
 
-        image: fs.readFileSync(path.resolve("./menu.jpg")),
+        image: { url: "menu.jpg" },
 
         caption: t,
 
